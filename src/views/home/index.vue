@@ -1,5 +1,12 @@
 <style lang="scss" scoped>
 .content {
+  .first {
+    .list-wrap {
+      height: 260px;
+      overflow: hidden;
+    }
+  }
+
   .second {
     background: #fff;
     height: 260px;
@@ -18,6 +25,14 @@
   .third {
     .lastest-se-projects {
       width: 730px;
+    }
+
+    .list-content {
+      height: calc(100% - 80px);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
   }
 
@@ -60,6 +75,13 @@
           }
         }
       }
+    }
+  }
+
+  .seven.shadow-wrap {
+    .list-wrap {
+      height: 260px;
+      overflow: hidden;
     }
   }
 
@@ -107,33 +129,39 @@
   <div class="content">
     <div class="w1200">
       <div class="flex-jc-sb mb20">
-        <div class="shadow-wrap w750">
+        <div class="first shadow-wrap w750">
           <el-tabs type="border-card">
             <el-tab-pane label="行业动态">
-              <List
-                :data="{
-                  title: '关于开展职业教育教师队伍能力提升行动的通知',
-                  time: '2022-08-08'
-                }"
-                :repeat="5"
+              <List :data="industryTrends.data" />
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :total="industryTrends.total"
+                :page-size="5"
+                :current-page="industryTrends.page"
+                @current-change="getIndustryTrends"
               />
             </el-tab-pane>
-            <el-tab-pane label="平台通知文件">
-              <List
-                :data="{
-                  title: '关于开展职业教育教师队伍能力提升行动的通知',
-                  time: '2022-08-08'
-                }"
-                :repeat="5"
+            <el-tab-pane label="通知文件">
+              <List :data="notices.data" />
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :page-size="5"
+                :total="notices.total"
+                :current-page="notices.page"
+                @current-change="getNotices"
               />
             </el-tab-pane>
             <el-tab-pane label="政策解读">
-              <List
-                :data="{
-                  title: '关于开展职业教育教师队伍能力提升行动的通知',
-                  time: '2022-08-08'
-                }"
-                :repeat="5"
+              <List :data="interpretationPolicys.data" />
+              <el-pagination
+                background
+                layout="prev, pager, next"
+                :page-size="5"
+                :total="interpretationPolicys.total"
+                :current-page="interpretationPolicys.page"
+                @current-change="getInterpretationPolicys"
               />
             </el-tab-pane>
           </el-tabs>
@@ -260,23 +288,20 @@
         <div class="common-card lastest-se-projects ">
           <div class="title">
             <span>最新校企合作项目</span>
-            <a href="#">更多></a>
+            <a href="javascript:;" @click="$router.push('/se-project')">
+              更多>
+            </a>
           </div>
           <div class="list-content">
-            <List
-              :data="{
-                title: '校企合作好案例——江南大学',
-                time: '2022-08-08'
-              }"
-              :repeat="15"
-            />
+            <List :data="projects.data" />
             <el-pagination
-              layout="prev, pager, next"
-              :total="1000"
-              class="mt40"
               background
-            >
-            </el-pagination>
+              layout="prev, pager, next"
+              :page-size="15"
+              :total="projects.total"
+              :current-page="projects.page"
+              @current-change="getProjects"
+            />
           </div>
         </div>
         <div class="third-right">
@@ -298,7 +323,7 @@
         <div></div>
         <div></div>
       </div>
-
+      <!-- 
       <div class="five mb20">
         <div class="common-card">
           <div class="title">
@@ -326,7 +351,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="six mb20">
         <div class="common-card">
@@ -357,7 +382,7 @@
         </div>
       </div>
 
-      <div class="seven mb40 flex-jc-sb">
+      <div class="seven shadow-wrap mb40 flex-jc-sb">
         <div class="w580">
           <div class="common-card">
             <div class="title mb10">
@@ -366,21 +391,25 @@
             <div class="list-content">
               <el-tabs type="border-card">
                 <el-tab-pane label="招聘">
-                  <List
-                    :data="{
-                      title: '关于开展职业教育教师队伍能力提升的通知',
-                      time: '2022-08-08'
-                    }"
-                    :repeat="5"
+                  <List :data="enterPriseRecruitments.data" />
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :page-size="5"
+                    :total="enterPriseRecruitments.total"
+                    :current-page="enterPriseRecruitments.page"
+                    @current-change="getEnterPriseRecruitments"
                   />
                 </el-tab-pane>
                 <el-tab-pane label="管理">
-                  <List
-                    :data="{
-                      title: '关于开展职业教育教师队伍能力提升的通知',
-                      time: '2022-08-08'
-                    }"
-                    :repeat="5"
+                  <List :data="enterpriseManagements.data" />
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :page-size="5"
+                    :total="enterpriseManagements.total"
+                    :current-page="enterpriseManagements.page"
+                    @current-change="getEnterPriseManagements"
                   />
                 </el-tab-pane>
               </el-tabs>
@@ -395,21 +424,25 @@
             <div class="list-content">
               <el-tabs type="border-card">
                 <el-tab-pane label="招聘">
-                  <List
-                    :data="{
-                      title: '关于开展职业教育教师队伍能力提升的通知',
-                      time: '2022-08-08'
-                    }"
-                    :repeat="5"
+                  <List :data="schoolRecruitments.data" />
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :page-size="5"
+                    :total="schoolRecruitments.total"
+                    :current-page="schoolRecruitments.page"
+                    @current-change="getSchoolRecruitments"
                   />
                 </el-tab-pane>
                 <el-tab-pane label="管理">
-                  <List
-                    :data="{
-                      title: '关于开展职业教育教师队伍能力提升的通知',
-                      time: '2022-08-08'
-                    }"
-                    :repeat="5"
+                  <List :data="schoolManagements.data" />
+                  <el-pagination
+                    background
+                    layout="prev, pager, next"
+                    :page-size="5"
+                    :total="schoolManagements.total"
+                    :current-page="schoolManagements.page"
+                    @current-change="getSchoolManagements"
                   />
                 </el-tab-pane>
               </el-tabs>
@@ -427,6 +460,15 @@ import VIPForm from "@/components/VIPForm";
 import WantedPublish from "@/components/WantedPublish";
 import Question from "@/components/Question";
 import CountTo from "vue-count-to";
+import { getArticlesRes, getCooperativeProjectRes } from "@/api";
+import dayjs from "dayjs";
+
+const rerender = data => {
+  return data.map(x => ({
+    ...x,
+    _createTime: dayjs(x.created).format("YYYY-MM-DD")
+  }));
+};
 
 export default {
   name: "HOME",
@@ -441,17 +483,147 @@ export default {
 
   data() {
     return {
-      queryForm: {
-        value: "",
-        type: ""
-      },
       banners: [
         require("../../assets/banner/s_0.jpg"),
         require("../../assets/banner/s_1.jpg"),
         require("../../assets/banner/s_4.jpg"),
         require("../../assets/banner/s_3.jpg")
-      ]
+      ],
+      industryTrends: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 行业动态
+      notices: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 通知文件
+      interpretationPolicys: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 政策解读
+      enterPriseRecruitments: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 企业招聘
+      enterpriseManagements: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 企业管理
+      schoolRecruitments: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 院校招聘
+      schoolManagements: {
+        page: 1,
+        total: 0,
+        data: []
+      }, // 院校管理
+      projects: {
+        page: 1,
+        total: 0,
+        data: []
+      } // 院校管理
     };
+  },
+
+  methods: {
+    async getIndustryTrends(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 90,
+        page,
+        pageSize: 5
+      });
+      this.industryTrends.total = totalElements;
+      this.industryTrends.data = rerender(content);
+    },
+    async getNotices(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 91,
+        page,
+        pageSize: 5
+      });
+      this.notices.total = totalElements;
+      this.notices.data = rerender(content);
+    },
+    async getInterpretationPolicys(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 139,
+        page,
+        pageSize: 5
+      });
+      this.interpretationPolicys.total = totalElements;
+      this.interpretationPolicys.data = rerender(content);
+    },
+    async getEnterPriseRecruitments(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 144,
+        page,
+        pageSize: 5
+      });
+      this.enterPriseRecruitments.total = totalElements;
+      this.enterPriseRecruitments.data = rerender(content);
+    },
+    async getEnterPriseManagements(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 146,
+        page,
+        pageSize: 5
+      });
+      this.enterpriseManagements.total = totalElements;
+      this.enterpriseManagements.data = rerender(content);
+    },
+    async getSchoolRecruitments(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 145,
+        page,
+        pageSize: 5
+      });
+      this.schoolRecruitments.total = totalElements;
+      this.schoolRecruitments.data = rerender(content);
+    },
+    async getSchoolManagements(page = 1) {
+      const { totalElements, content } = await getArticlesRes({
+        subChannelId: 147,
+        page,
+        pageSize: 5
+      });
+      this.schoolManagements.total = totalElements;
+      this.schoolManagements.data = rerender(content);
+    },
+    async getProjects(page = 1) {
+      const { totalElements, content } = await getCooperativeProjectRes({
+        page,
+        pageSize: 10
+      });
+      this.projects.total = totalElements;
+      this.projects.data = content.map(x => ({
+        ...x,
+        title: x.projectTitle,
+        _createTime: dayjs(x.createdDate).format("YYYY-MM-DD"),
+        authorizationLetterUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${
+          x.authorizationLetterUrl
+        }`
+      }));
+    }
+  },
+
+  mounted() {
+    Promise.all([
+      this.getIndustryTrends(),
+      this.getNotices(),
+      this.getInterpretationPolicys(),
+      this.getEnterPriseRecruitments(),
+      this.getEnterPriseManagements(),
+      this.getSchoolRecruitments(),
+      this.getSchoolManagements(),
+      this.getProjects()
+    ]);
   }
 };
 </script>

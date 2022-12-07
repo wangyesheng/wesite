@@ -111,7 +111,9 @@
                   <a href="javascript:;" class="btn-primary" @click="query(1)">
                     搜索
                   </a>
-                  <a href="javascript:;" class="btn-plain">重置</a>
+                  <a href="javascript:;" class="btn-plain" @click="resetQuery">
+                    重置
+                  </a>
                 </div>
               </el-form-item>
             </el-form>
@@ -122,7 +124,7 @@
                 :key="n.id"
                 @click="onEnterpriseClick(n.id)"
               >
-                <img :src="n.typePhotoUrl" alt="" />
+                <img :src="n._typePhotoUrl" alt="" />
                 <div class="details">
                   <p class="__title mb10">{{ n.name }}</p>
                   <div class="__intro">
@@ -219,6 +221,17 @@ export default {
   },
 
   methods: {
+    resetQuery() {
+      this.queryForm = {
+        q_Contains_name: "",
+        q_EQ_type: "",
+        q_EQ_enterpriseScale: "",
+        workingType: "",
+        page: 1,
+        pageSize: 5
+      };
+      this.query();
+    },
     async query(page = 1) {
       const { totalElements, content } = await getEnterprisesRes({
         ...this.queryForm,
@@ -226,6 +239,7 @@ export default {
       });
       this.enterpriseWrap.data = content.map(x => ({
         ...x,
+        _typePhotoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${x.typePhotoUrl}`,
         updatedDate: x.updatedDate
           ? dayjs(x.updatedDate).format("YYYY-MM-DD HH:mm:ss")
           : "",

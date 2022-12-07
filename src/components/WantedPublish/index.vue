@@ -14,7 +14,7 @@
       <span>我要发布</span>
     </div>
     <div class="list-content">
-      <a href="javascript:;" class="btn-plain mt10">校企会报名</a>
+      <!-- <a href="javascript:;" class="btn-plain mt10">校企会报名</a> -->
       <a
         href="javascript:;"
         class="btn-plain mt10"

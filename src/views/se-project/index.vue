@@ -133,7 +133,7 @@ export default {
       this.total = totalElements;
       this.projects = content.map(x => ({
         ...x,
-        authorizationLetterUrl: `http://124.220.99.101:8080/${
+        authorizationLetterUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${
           x.authorizationLetterUrl
         }`
       }));

@@ -20,18 +20,18 @@
             v-model="loginFormData.password"
           />
         </el-form-item>
-        <el-form-item>
+        <!-- <el-form-item>
           <el-checkbox>记住密码</el-checkbox>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-checkbox>
             我已阅读并同意《网站使用协议书》
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-          <a href="javascript:;" class="btn-primary" @click="checkLogin"
-            >登录</a
-          >
+          <a href="javascript:;" class="btn-primary" @click="checkLogin">
+            登录
+          </a>
           <a
             href="javascript:;"
             class="btn-plain"
@@ -81,6 +81,7 @@
 import { checkLoginRes, getUserInfoRes } from "@/api";
 import { setToken } from "@/utils/auth";
 import dictionaryMixin from "@/mixins/dictionary.js";
+import store from "@/store";
 
 export default {
   name: "VIPForm",
@@ -111,10 +112,12 @@ export default {
         ).name
       };
       localStorage.setItem("app_user", JSON.stringify(data));
+      store.commit("user/SET_APP_USER", data);
       this.appUser = data;
     },
     handleLogout() {
       localStorage.setItem("app_user", "{}");
+      store.commit("user/SET_APP_USER", {});
       this.appUser = {};
     }
   }

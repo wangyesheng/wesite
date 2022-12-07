@@ -108,6 +108,9 @@
                         <el-upload
                           class="uploader-wrap"
                           action="/uploadController/image-upload"
+                          :headers="{
+                            isToken: false
+                          }"
                           list-type="picture-card"
                           :limit="1"
                           :data="{ resizeMode: 'normal' }"
@@ -190,7 +193,7 @@ export default {
 
   methods: {
     onUploadSuccess(response, type) {
-      this.formData[type] = `${process.env.VUE_APP_BASE_URL}${response.url}`;
+      this.formData[type] = response.url;
     },
     onUploadFileRemove(type) {
       this.formData[type] = "";

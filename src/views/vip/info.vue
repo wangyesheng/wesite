@@ -251,6 +251,83 @@
             </el-col>
           </el-row>
         </div>
+        <div class="pannel">
+          <el-form
+            ref="userFormRef"
+            label-position="left"
+            :model="userFormData"
+            :rules="userFormRules"
+          >
+            <el-form-item prop="name" label="账号名称：">
+              <el-input v-model="userFormData.name" />
+            </el-form-item>
+            <el-form-item label="会员头像：">
+              <el-upload
+                class="avatar-uploader"
+                action="/uploadController/image-upload"
+                list-type="picture-card"
+                :headers="{
+                  isToken: false
+                }"
+                :limit="1"
+                :data="{ resizeMode: 'normal' }"
+                :on-success="onUploadSuccess"
+                :on-remove="onUploadFileRemove"
+              >
+                <i class="el-icon-plus avatar-uploader-icon"></i>
+              </el-upload>
+            </el-form-item>
+            <el-form-item prop="sex" label="性别：">
+              <el-radio-group v-model="userFormData.sex">
+                <el-radio label="1" border>
+                  男
+                </el-radio>
+                <el-radio label="0" border>
+                  女
+                </el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item prop="age" label="年龄：">
+              <el-input v-model="userFormData.age" />
+            </el-form-item>
+
+            <el-form-item prop="orgType" label="组织类型：">
+              <el-radio-group v-model="userFormData.orgType">
+                <el-radio label="1" border>
+                  企业
+                </el-radio>
+                <el-radio label="2" border>
+                  学校
+                </el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item prop="orgName" label="单位名称：">
+              <el-input v-model="userFormData.orgName" />
+            </el-form-item>
+            <el-form-item prop="orgAddr" label="单位地址：">
+              <el-input v-model="userFormData.orgAddr" />
+            </el-form-item>
+            <el-form-item prop="orgContactor" label="单位联系人：">
+              <el-input v-model="userFormData.orgContactor" />
+            </el-form-item>
+            <el-form-item prop="orgMobile" label="联系人电话：">
+              <el-input v-model="userFormData.orgMobile" />
+            </el-form-item>
+            <el-form-item label="单位网址：">
+              <el-input v-model="userFormData.orgWebsite" />
+            </el-form-item>
+            <el-form-item label="邮箱：">
+              <el-input v-model="userFormData.email" />
+            </el-form-item>
+            <el-form-item>
+              <div class="btn-wrap">
+                <a href="javascript:;" class="btn-primary" @click="onSubmit">
+                  提交
+                </a>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </div>
   </div>
@@ -281,14 +358,61 @@ export default {
 
   data() {
     const appUser = JSON.parse(localStorage.getItem("app_user") || "{}");
-    return { appUser, tabs, activeTabIndex: 0 };
+    return {
+      appUser,
+      tabs,
+      activeTabIndex: 0,
+      userFormData: {
+        name: "",
+        realName: "",
+        sex: "",
+        age: "",
+        email: "",
+        orgType: "",
+        orgName: "",
+        orgAddr: "",
+        orgContactor: "",
+        orgMobile: "",
+        orgWebsite: "",
+        portraitUrl: ""
+      },
+      userFormRules: {
+        name: [
+          { required: true, message: "请填写账号名称！", trigger: "blur" }
+        ],
+        sex: [{ required: true, message: "请选择性别！", trigger: "change" }],
+        age: [{ required: true, message: "请填写年龄！", trigger: "blur" }],
+        orgType: [
+          { required: true, message: "请选择组织类型！", trigger: "change" }
+        ],
+        orgName: [
+          { required: true, message: "请填写单位名称！", trigger: "blur" }
+        ],
+        orgAddr: [
+          { required: true, message: "请填写单位地址！", trigger: "blur" }
+        ],
+        orgContactor: [
+          { required: true, message: "请填写联系人姓名！", trigger: "blur" }
+        ],
+        orgMobile: [
+          { required: true, message: "请填写单位联系人号码！", trigger: "blur" }
+        ]
+      }
+    };
   },
 
   methods: {
     onTabClick(e) {
       const index = e.target.getAttribute("data-index");
       this.activeTabIndex = index;
-    }
+    },
+    onUploadSuccess(response) {
+      this.userFormData.portraitUrl = response.url;
+    },
+    onUploadFileRemove() {
+      this.userFormData.portraitUrl = "";
+    },
+    onSubmit() {}
   }
 };
 </script>

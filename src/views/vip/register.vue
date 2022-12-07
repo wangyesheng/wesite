@@ -132,6 +132,9 @@
                   class="avatar-uploader"
                   action="/uploadController/image-upload"
                   list-type="picture-card"
+                  :headers="{
+                    isToken: false
+                  }"
                   :limit="1"
                   :data="{ resizeMode: 'normal' }"
                   :on-success="onUploadSuccess"
@@ -321,9 +324,7 @@ export default {
       this._verificationCode = data;
     },
     onUploadSuccess(response) {
-      this.registerFormData.portraitUrl = `${process.env.VUE_APP_BASE_URL}${
-        response.url
-      }`;
+      this.registerFormData.portraitUrl = response.url;
     },
     onUploadFileRemove() {
       this.registerFormData.portraitUrl = "";

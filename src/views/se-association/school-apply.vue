@@ -94,6 +94,9 @@
                       class="uploader-wrap"
                       action="/uploadController/image-upload"
                       list-type="picture-card"
+                      :headers="{
+                        isToken: false
+                      }"
                       :limit="1"
                       :data="{ resizeMode: 'normal' }"
                       :on-success="e => onUploadSuccess(e, 'receipt')"
@@ -326,6 +329,9 @@
                       class="uploader-wrap"
                       action="/uploadController/image-upload"
                       list-type="picture-card"
+                      :headers="{
+                        isToken: false
+                      }"
                       :limit="1"
                       :data="{ resizeMode: 'normal' }"
                       :on-success="e => onUploadSuccess(e, 'typePhotoUrl')"
@@ -348,6 +354,9 @@
                       class="uploader-wrap"
                       action="/uploadController/image-upload"
                       list-type="picture-card"
+                      :headers="{
+                        isToken: false
+                      }"
                       :limit="1"
                       :data="{ resizeMode: 'normal' }"
                       :on-success="e => onUploadSuccess(e, 'photoAlbum')"
@@ -443,7 +452,7 @@ export default {
 
   methods: {
     onUploadSuccess(response, type) {
-      this.formData[type] = `${process.env.VUE_APP_BASE_URL}${response.url}`;
+      this.formData[type] = response.url;
     },
     onUploadFileRemove(type) {
       this.formData[type] = "";

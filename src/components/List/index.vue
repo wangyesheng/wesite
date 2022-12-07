@@ -32,12 +32,14 @@
     <ul v-if="repeat">
       <li class="flex-jc-sb" v-for="n in repeat" :key="n">
         <a href="#">{{ data.title }}</a>
-        <span>{{ data.time }}</span>
+        <span>{{ data._createTime }}</span>
       </li>
     </ul>
     <ul v-else>
       <li class="flex-jc-sb" v-for="n in data" :key="n.id">
-        <a href="#">{{ n.title }}</a>
+        <a href="javascript:;" @click="onNavToInfoDetails(n)">
+          {{ n.title }}
+        </a>
         <span>{{ n._createTime }}</span>
       </li>
     </ul>
@@ -47,6 +49,14 @@
 <script>
 export default {
   name: "LIST",
-  props: ["data", "repeat"]
+
+  props: ["data", "repeat"],
+
+  methods: {
+    onNavToInfoDetails(scope) {
+      localStorage.setItem("lastestInfo", JSON.stringify(scope));
+      this.$router.push("/info-details");
+    }
+  }
 };
 </script>

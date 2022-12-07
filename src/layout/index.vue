@@ -171,9 +171,6 @@
                 slot="prepend"
                 placeholder="请选择"
               >
-                <el-option label="餐厅名" value="1"></el-option>
-                <el-option label="订单号" value="2"></el-option>
-                <el-option label="用户电话" value="3"></el-option>
               </el-select>
               <el-button type="primary" slot="append" icon="el-icon-search">
                 搜索
@@ -181,10 +178,12 @@
             </el-input>
           </div>
           <div class="btn-vip" v-if="Object.keys(appUser).length == 0">
-            <a href="#">会员登陆</a>
-            <a href="#">会员注册</a>
+            <a href="javascript:;">会员登录</a>
+            <a href="javascript:;" @click="$router.push('/register')">
+              会员注册
+            </a>
           </div>
-          <div class="user-wrap">
+          <div class="user-wrap" v-else>
             <img :src="appUser.portraitUrl" alt="" />
             <span>{{ appUser.name }}</span>
           </div>
@@ -232,6 +231,7 @@
 
 <script>
 import { isMobile } from "@/utils";
+import store from "@/store";
 export default {
   name: "LAYOUT",
 
@@ -241,13 +241,14 @@ export default {
     },
     inMobile() {
       return isMobile();
+    },
+    appUser() {
+      return store.getters.appUser;
     }
   },
 
   data() {
-    const appUser = JSON.parse(localStorage.getItem("app_user") || "{}");
     return {
-      appUser,
       navLinks: [
         {
           label: "首页",
@@ -265,10 +266,10 @@ export default {
           label: "企业库",
           key: "/enterprise"
         },
-        {
-          label: "校企合作会",
-          key: "/se-association"
-        },
+        // {
+        //   label: "校企合作会",
+        //   key: "/se-association"
+        // },
         {
           label: "校园招聘会",
           key: "/job-fair"

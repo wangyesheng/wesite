@@ -153,6 +153,9 @@
                         class="uploader-wrap"
                         action="/uploadController/image-upload"
                         list-type="picture-card"
+                        :headers="{
+                          isToken: false
+                        }"
                         :limit="1"
                         :data="{ resizeMode: 'normal' }"
                         :on-success="e => onUploadSuccess(e, 'photoUrl')"
@@ -178,6 +181,9 @@
                         class="uploader-wrap"
                         action="/uploadController/image-upload"
                         list-type="picture-card"
+                        :headers="{
+                          isToken: false
+                        }"
                         :limit="1"
                         :data="{ resizeMode: 'normal' }"
                         :on-success="
@@ -261,7 +267,7 @@ export default {
 
   methods: {
     onUploadSuccess(response, type) {
-      this.formData[type] = `${process.env.VUE_APP_BASE_URL}${response.url}`;
+      this.formData[type] = response.url;
     },
     onUploadFileRemove(type) {
       this.formData[type] = "";

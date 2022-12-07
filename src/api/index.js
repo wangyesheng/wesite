@@ -40,10 +40,11 @@ export function getEnterpriseDetailsByIdRes(id) {
   });
 }
 
-export function getArticlesRes() {
+export function getArticlesRes(params) {
   return request({
     url: `/api/article`,
-    method: "get"
+    method: "get",
+    params
   });
 }
 
@@ -161,5 +162,13 @@ export function getCooperativeProjectRes(params) {
     url: `api/backend/core/cooperativeproject/PageList`,
     method: "get",
     params
+  });
+}
+
+export function updateUserInfoRes(data) {
+  return request({
+    url: `api/backend/core/member/update`,
+    method: "post",
+    data
   });
 }

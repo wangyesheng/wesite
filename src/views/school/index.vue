@@ -154,7 +154,7 @@
                 :key="n.id"
                 @click="onSchoolClick(n.id)"
               >
-                <img :src="n.typePhotoUrl" alt="" />
+                <img :src="n._typePhotoUrl" alt="" />
                 <div class="details">
                   <p class="__title mb10">{{ n.name }}</p>
                   <div class="__intro">
@@ -280,6 +280,9 @@ export default {
       this.schoolWrap.data = content.map(x => {
         return {
           ...x,
+          _typePhotoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${
+            x.typePhotoUrl
+          }`,
           updatedDate: x.updatedDate
             ? dayjs(x.updatedDate).format("YYYY-MM-DD HH:mm:ss")
             : "",

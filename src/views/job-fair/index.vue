@@ -156,7 +156,7 @@ export default {
       this.total = totalElements;
       this.jobFairs = content.map(x => ({
         ...x,
-        photoUrl: `http://124.220.99.101:8080/${x.photoUrl}`
+        photoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${x.photoUrl}`
       }));
     }
   },
