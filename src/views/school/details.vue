@@ -98,7 +98,7 @@
           <div class="list-content mb20">
             <ul class="list-wrap">
               <li class="item">
-                <img :src="schoolDetails.typePhotoUrl" alt="" />
+                <img :src="schoolDetails._typePhotoUrl" alt="" />
                 <div class="details">
                   <div class="__intro">
                     <div>
@@ -246,6 +246,7 @@ export default {
       this.selectedModes = data.modelList;
       this.schoolDetails = {
         ...data,
+        _typePhotoUrl: process.env.VUE_APP_IMAGE_BASE_URL + data.typePhotoUrl,
         internship: JSON.parse(data.internship),
         _level: (this.s_levels.find(y => y.value == data.level) || {}).name,
         _type: (this.s_types.find(y => y.value == data.type) || {}).name,

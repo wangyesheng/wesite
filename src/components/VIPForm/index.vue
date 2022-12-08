@@ -47,9 +47,13 @@
       <div class="vip-content">
         <div
           class="avatar"
-          :style="`background-image: url(${appUser.portraitUrl})`"
+          :style="`background-image: url(${appUser._portraitUrl})`"
         >
-          <img src="../../assets/icon/edit.png" alt="" />
+          <img
+            src="../../assets/icon/edit.png"
+            @click="$router.push('/vip-info?index=1')"
+            alt=""
+          />
         </div>
         <div class="vip-name">
           {{ appUser.name }}
@@ -109,7 +113,8 @@ export default {
         ...data,
         _memberTypeName: (
           this.vip_types.find(x => x.value == data.memberType) || {}
-        ).name
+        ).name,
+        _portraitUrl: process.env.VUE_APP_IMAGE_BASE_URL + data.portraitUrl
       };
       localStorage.setItem("app_user", JSON.stringify(data));
       store.commit("user/SET_APP_USER", data);

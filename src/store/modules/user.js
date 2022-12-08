@@ -1,6 +1,6 @@
 const getDefaultState = () => {
   return {
-    appUser: {}
+    appUser: JSON.parse(localStorage.getItem("app_user") || "{}")
   };
 };
 

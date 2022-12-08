@@ -172,3 +172,11 @@ export function updateUserInfoRes(data) {
     data
   });
 }
+
+export function changePasswordRes(data) {
+  return request({
+    url: `api/backend/core/member/changePassword`,
+    method: "post",
+    data
+  });
+}

@@ -32,7 +32,6 @@
 
   .info {
     margin-top: 180px;
-    height: 500px;
     background: #fff;
     padding: 80px 40px;
     display: flex;
@@ -173,6 +172,37 @@
           }
         }
       }
+
+      &.userInfo {
+        ::v-deep {
+          .el-row {
+            margin-bottom: 10px;
+            padding-bottom: 0px;
+            border: none;
+
+            .el-form-item {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .el-form-item.portrait {
+              width: 100%;
+            }
+          }
+
+          .submit-action {
+            margin-top: 20px;
+          }
+        }
+      }
+
+      &.resetPassword {
+        .el-form {
+          width: 50%;
+          margin: 0 auto;
+        }
+      }
     }
   }
 }
@@ -192,9 +222,9 @@
     <div class="w1200 ">
       <div class="info">
         <div class="user">
-          <img :src="appUser.portraitUrl" alt="" />
+          <img :src="appUser._portraitUrl" alt="" />
           <div class="user-content">
-            <span class="name">Kitty</span>
+            <span class="name">{{ appUser.name }}</span>
             <span class="level">{{ appUser._memberTypeName }}</span>
             <span class="phone">手机号：{{ appUser.mobile }}</span>
             <span class="service-time">服务有效期：2022-12-20</span>
@@ -211,117 +241,222 @@
             <span :data-index="i">{{ item.label }}</span>
           </div>
         </div>
-        <div class="pannel">
+        <div class="pannel" v-if="activeTabIndex == 0">
           <el-row :gutter="60">
             <el-col :span="12">
               <span class="label">用户名</span>
               <span class="value">{{ appUser.name }}</span>
             </el-col>
             <el-col :span="12">
-              <span class="label">角色</span>
+              <span class="label">真实姓名</span>
+              <span class="value">{{ appUser.realName }}</span>
+            </el-col>
+          </el-row>
+
+          <el-row :gutter="60">
+            <el-col :span="12">
+              <span class="label">年龄</span>
               <span class="value">
-                {{ appUser.orgType == 1 ? "学校" : "企业" }}
+                {{ appUser.age }}
+              </span>
+            </el-col>
+            <el-col :span="12">
+              <span class="label">性别</span>
+              <span class="value">{{ appUser.sex == 1 ? "男" : "女" }}</span>
+            </el-col>
+          </el-row>
+          <el-row :gutter="60">
+            <el-col :span="12">
+              <span class="label">手机号</span>
+              <span class="value">
+                {{ appUser.mobile }}
+              </span>
+            </el-col>
+            <el-col :span="12">
+              <span class="label">组织类型</span>
+              <span class="value">
+                {{ appUser.orgType == 1 ? "企业" : "学校" }}
               </span>
             </el-col>
           </el-row>
+
           <el-row :gutter="60">
             <el-col :span="12">
               <span class="label">单位名称</span>
               <span class="value">{{ appUser.orgName }}</span>
             </el-col>
             <el-col :span="12">
-              <span class="label">单位邮箱</span>
-              <span class="value">{{ appUser.email }}</span>
-            </el-col>
-          </el-row>
-          <el-row :gutter="60">
-            <el-col :span="12">
-              <span class="label">联系人</span>
-              <span class="value">{{ appUser.orgContactor }}</span>
-            </el-col>
-            <el-col :span="12">
-              <span class="label">联系人电话</span>
-              <span class="value">{{ appUser.orgMobile }}</span>
-            </el-col>
-          </el-row>
-          <el-row :gutter="60">
-            <el-col :span="24">
               <span class="label">单位地址</span>
               <span class="value">{{ appUser.orgAddr }}</span>
             </el-col>
           </el-row>
+          <el-row :gutter="60">
+            <el-col :span="12">
+              <span class="label">单位联系人</span>
+              <span class="value">{{ appUser.orgContactor }}</span>
+            </el-col>
+            <el-col :span="12">
+              <span class="label">单位联系人电话</span>
+              <span class="value">{{ appUser.orgMobile }}</span>
+            </el-col>
+          </el-row>
+          <el-row :gutter="60">
+            <el-col :span="12">
+              <span class="label">单位邮箱</span>
+              <span class="value">{{ appUser.email }}</span>
+            </el-col>
+          </el-row>
         </div>
-        <div class="pannel">
+        <div class="pannel userInfo" v-if="activeTabIndex == 1">
           <el-form
             ref="userFormRef"
             label-position="left"
             :model="userFormData"
             :rules="userFormRules"
           >
-            <el-form-item prop="name" label="账号名称：">
-              <el-input v-model="userFormData.name" />
-            </el-form-item>
-            <el-form-item label="会员头像：">
-              <el-upload
-                class="avatar-uploader"
-                action="/uploadController/image-upload"
-                list-type="picture-card"
-                :headers="{
-                  isToken: false
-                }"
-                :limit="1"
-                :data="{ resizeMode: 'normal' }"
-                :on-success="onUploadSuccess"
-                :on-remove="onUploadFileRemove"
-              >
-                <i class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
-            </el-form-item>
-            <el-form-item prop="sex" label="性别：">
-              <el-radio-group v-model="userFormData.sex">
-                <el-radio label="1" border>
-                  男
-                </el-radio>
-                <el-radio label="0" border>
-                  女
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item prop="age" label="年龄：">
-              <el-input v-model="userFormData.age" />
-            </el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item class="portrait" label="会员头像：">
+                  <el-upload
+                    class="avatar-uploader"
+                    action="/api/uploadController/image-upload"
+                    list-type="picture-card"
+                    :headers="{
+                      isToken: false
+                    }"
+                    :limit="1"
+                    :data="{ resizeMode: 'normal' }"
+                    :on-success="onUploadSuccess"
+                    :on-remove="onUploadFileRemove"
+                    :file-list="fileList"
+                  >
+                    <i class="el-icon-plus avatar-uploader-icon"></i>
+                  </el-upload>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row :gutter="20">
+              <el-col :span="24">
+                <el-form-item class="name" prop="name" label="账号名称：">
+                  <el-input disabled v-model="userFormData.name" />
+                </el-form-item>
+              </el-col>
+            </el-row>
 
-            <el-form-item prop="orgType" label="组织类型：">
-              <el-radio-group v-model="userFormData.orgType">
-                <el-radio label="1" border>
-                  企业
-                </el-radio>
-                <el-radio label="2" border>
-                  学校
-                </el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item prop="orgName" label="单位名称：">
-              <el-input v-model="userFormData.orgName" />
-            </el-form-item>
-            <el-form-item prop="orgAddr" label="单位地址：">
-              <el-input v-model="userFormData.orgAddr" />
-            </el-form-item>
-            <el-form-item prop="orgContactor" label="单位联系人：">
-              <el-input v-model="userFormData.orgContactor" />
-            </el-form-item>
-            <el-form-item prop="orgMobile" label="联系人电话：">
-              <el-input v-model="userFormData.orgMobile" />
-            </el-form-item>
-            <el-form-item label="单位网址：">
-              <el-input v-model="userFormData.orgWebsite" />
-            </el-form-item>
-            <el-form-item label="邮箱：">
-              <el-input v-model="userFormData.email" />
-            </el-form-item>
-            <el-form-item>
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item prop="realName" label="真实姓名：">
+                  <el-input v-model="userFormData.realName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="age" label="年龄：">
+                  <el-input v-model="userFormData.age" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item prop="sex" label="性别：">
+                  <el-radio-group v-model="userFormData.sex">
+                    <el-radio label="1" border>
+                      男
+                    </el-radio>
+                    <el-radio label="0" border>
+                      女
+                    </el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="orgType" label="组织类型：">
+                  <el-radio-group v-model="userFormData.orgType">
+                    <el-radio label="1" border>
+                      企业
+                    </el-radio>
+                    <el-radio label="2" border>
+                      学校
+                    </el-radio>
+                  </el-radio-group>
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item prop="orgName" label="单位名称：">
+                  <el-input v-model="userFormData.orgName" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="orgAddr" label="单位地址：">
+                  <el-input v-model="userFormData.orgAddr" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item prop="orgContactor" label="单位联系人：">
+                  <el-input v-model="userFormData.orgContactor" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item prop="orgMobile" label="单位联系人电话：">
+                  <el-input v-model="userFormData.orgMobile" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-row :gutter="20">
+              <el-col :span="12">
+                <el-form-item label="单位网址：">
+                  <el-input v-model="userFormData.orgWebsite" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="单位邮箱：">
+                  <el-input v-model="userFormData.email" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+
+            <el-form-item class="submit-action">
               <div class="btn-wrap">
                 <a href="javascript:;" class="btn-primary" @click="onSubmit">
+                  提交
+                </a>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="pannel resetPassword" v-if="activeTabIndex == 2">
+          <el-form
+            ref="passwordFormRef"
+            label-position="left"
+            :model="passwordFormData"
+            :rules="passwordFormRules"
+          >
+            <el-form-item prop="oldPassword" label="旧密码">
+              <el-input v-model="passwordFormData.oldPassword" />
+            </el-form-item>
+
+            <el-form-item prop="password" label="新密码">
+              <el-input v-model="passwordFormData.password" />
+            </el-form-item>
+
+            <el-form-item prop="newPassword" label="确认新密码">
+              <el-input v-model="passwordFormData.newPassword" />
+            </el-form-item>
+
+            <el-form-item class="submit-action">
+              <div class="btn-wrap">
+                <a
+                  href="javascript:;"
+                  class="btn-primary"
+                  @click="onPasswordSubmit"
+                >
                   提交
                 </a>
               </div>
@@ -334,6 +469,9 @@
 </template>
 
 <script>
+import { updateUserInfoRes, changePasswordRes } from "@/api";
+import store from "@/store";
+
 const tabs = [
   {
     label: "资料详情",
@@ -346,7 +484,7 @@ const tabs = [
     icon: require("./assets/images/edit.png")
   },
   {
-    label: "重置密码",
+    label: "修改密码",
     value: "reset",
     icon: require("./assets/images/reset-password.png")
   }
@@ -354,31 +492,38 @@ const tabs = [
 export default {
   name: "vip-info",
 
-  components: {},
+  computed: {
+    appUser() {
+      return store.getters.appUser;
+    }
+  },
 
   data() {
-    const appUser = JSON.parse(localStorage.getItem("app_user") || "{}");
+    const appUser = store.getters.appUser;
     return {
-      appUser,
       tabs,
-      activeTabIndex: 0,
+      activeTabIndex: this.$route.query.index || 0,
+      fileList: [{ name: "portraitUrl", url: appUser._portraitUrl }],
       userFormData: {
-        name: "",
-        realName: "",
-        sex: "",
-        age: "",
-        email: "",
-        orgType: "",
-        orgName: "",
-        orgAddr: "",
-        orgContactor: "",
-        orgMobile: "",
-        orgWebsite: "",
-        portraitUrl: ""
+        name: appUser.name,
+        realName: appUser.realName,
+        sex: appUser.sex,
+        age: appUser.age,
+        email: appUser.email,
+        orgType: appUser.orgType,
+        orgName: appUser.orgName,
+        orgAddr: appUser.orgAddr,
+        orgContactor: appUser.orgContactor,
+        orgMobile: appUser.orgMobile,
+        orgWebsite: appUser.orgWebsite,
+        portraitUrl: appUser.portraitUrl
       },
       userFormRules: {
         name: [
           { required: true, message: "请填写账号名称！", trigger: "blur" }
+        ],
+        realName: [
+          { required: true, message: "请填写真实姓名！", trigger: "blur" }
         ],
         sex: [{ required: true, message: "请选择性别！", trigger: "change" }],
         age: [{ required: true, message: "请填写年龄！", trigger: "blur" }],
@@ -397,6 +542,22 @@ export default {
         orgMobile: [
           { required: true, message: "请填写单位联系人号码！", trigger: "blur" }
         ]
+      },
+      passwordFormData: {
+        oldPassword: "",
+        password: "",
+        newPassword: ""
+      },
+      passwordFormRules: {
+        oldPassword: [
+          { required: true, message: "请输入旧密码！", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请输入新密码！", trigger: "blur" }
+        ],
+        newPassword: [
+          { required: true, message: "请再次输入新密码！", trigger: "blur" }
+        ]
       }
     };
   },
@@ -412,7 +573,38 @@ export default {
     onUploadFileRemove() {
       this.userFormData.portraitUrl = "";
     },
-    onSubmit() {}
+    onSubmit() {
+      this.$refs.userFormRef.validate(async valid => {
+        if (valid) {
+          let reqData = {
+            id: this.appUser.id,
+            ...this.userFormData
+          };
+          await updateUserInfoRes(reqData);
+          this.$message.success("用户信息更新成功！");
+          reqData = {
+            ...this.appUser,
+            ...reqData,
+            _portraitUrl:
+              process.env.VUE_APP_IMAGE_BASE_URL + reqData.portraitUrl
+          };
+          localStorage.setItem("app_user", JSON.stringify(reqData));
+          store.commit("user/SET_APP_USER", reqData);
+        } else {
+          return false;
+        }
+      });
+    },
+    onPasswordSubmit() {
+      this.$refs.passwordFormRef.validate(async valid => {
+        if (valid) {
+          await changePasswordRes(this.passwordFormData);
+          this.$message.success("密码修改成功！");
+        } else {
+          return false;
+        }
+      });
+    }
   }
 };
 </script>

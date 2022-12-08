@@ -107,7 +107,7 @@
                       <el-col :span="24">
                         <el-upload
                           class="uploader-wrap"
-                          action="/uploadController/image-upload"
+                          action="/api/uploadController/image-upload"
                           :headers="{
                             isToken: false
                           }"

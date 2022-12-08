@@ -151,7 +151,7 @@
                     <el-col :span="24">
                       <el-upload
                         class="uploader-wrap"
-                        action="/uploadController/image-upload"
+                        action="/api/uploadController/image-upload"
                         list-type="picture-card"
                         :headers="{
                           isToken: false
@@ -179,7 +179,7 @@
                     <el-col :span="24">
                       <el-upload
                         class="uploader-wrap"
-                        action="/uploadController/image-upload"
+                        action="/api/uploadController/image-upload"
                         list-type="picture-card"
                         :headers="{
                           isToken: false

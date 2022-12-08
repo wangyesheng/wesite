@@ -24,7 +24,7 @@
 
   .third {
     .lastest-se-projects {
-      width: 730px;
+      width: 768px;
     }
 
     .list-content {

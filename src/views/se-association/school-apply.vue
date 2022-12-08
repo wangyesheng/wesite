@@ -92,7 +92,7 @@
                   <el-col :span="24">
                     <el-upload
                       class="uploader-wrap"
-                      action="/uploadController/image-upload"
+                      action="/api/uploadController/image-upload"
                       list-type="picture-card"
                       :headers="{
                         isToken: false
@@ -112,7 +112,7 @@
                   <p>2、上传盖章回执扫描件，或盖章后拍照上传；</p>
                   <p>3、上传图片仅.jpg格式，规格大小限制为1M以内；</p>
                   <p>
-                    4.请保存好您的盖章件原件，实体校企会报到时需出示原件，用以确认身份。
+                    4、请保存好您的盖章件原件，实体校企会报到时需出示原件，用以确认身份。
                   </p>
                 </div>
               </el-form-item>
@@ -327,7 +327,7 @@
                   <el-col :span="24">
                     <el-upload
                       class="uploader-wrap"
-                      action="/uploadController/image-upload"
+                      action="/api/uploadController/image-upload"
                       list-type="picture-card"
                       :headers="{
                         isToken: false
@@ -352,7 +352,7 @@
                   <el-col :span="24">
                     <el-upload
                       class="uploader-wrap"
-                      action="/uploadController/image-upload"
+                      action="/api/uploadController/image-upload"
                       list-type="picture-card"
                       :headers="{
                         isToken: false
@@ -496,6 +496,8 @@ export default {
         model: formData.model.join(";")
       };
       await createSchoolRes(reqData);
+      this.$message.success("操作成功！");
+      this.$router.push("/school");
     }
   }
 };

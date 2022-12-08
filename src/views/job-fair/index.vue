@@ -101,6 +101,9 @@
                 :total="total"
                 class="mt20"
                 background
+                :page-size="5"
+                :current-page="queryForm.page"
+                @current-change="getJobFairs"
               />
             </ul>
           </div>
@@ -108,7 +111,7 @@
         <div class="w420">
           <VIPForm class="mb10" />
           <WantedPublish class="mb10" />
-          <div class="ask-question mb10">
+          <!-- <div class="ask-question mb10">
             <span class="mb20">校企合作有什么问题？可进行提问！</span>
             <a href="#" class="btn-plain">我要提问</a>
           </div>
@@ -117,7 +120,7 @@
               :data="{ title: '校企相关问题', time: '2022-08-08' }"
               :repeat="3"
             />
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -143,7 +146,7 @@ export default {
     return {
       queryForm: {
         page: 1,
-        pageSize: 10
+        pageSize: 5
       },
       total: 0,
       jobFairs: []
@@ -151,8 +154,11 @@ export default {
   },
 
   methods: {
-    async getJobFairs() {
-      const { totalElements, content } = await getJobFairsRes(this.queryForm);
+    async getJobFairs(page = 1) {
+      const { totalElements, content } = await getJobFairsRes({
+        ...this.queryForm,
+        page
+      });
       this.total = totalElements;
       this.jobFairs = content.map(x => ({
         ...x,

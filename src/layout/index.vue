@@ -184,7 +184,7 @@
             </a>
           </div>
           <div class="user-wrap" v-else>
-            <img :src="appUser.portraitUrl" alt="" />
+            <img :src="appUser._portraitUrl" alt="" />
             <span>{{ appUser.name }}</span>
           </div>
         </div>

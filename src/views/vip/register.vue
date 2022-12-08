@@ -92,6 +92,9 @@
               <el-form-item prop="name" label="账号名称：">
                 <el-input v-model="registerFormData.name" />
               </el-form-item>
+              <el-form-item prop="name" label="真实姓名">
+                <el-input v-model="registerFormData.realName" />
+              </el-form-item>
               <el-form-item prop="mobile" label="手机号：">
                 <el-input v-model="registerFormData.mobile" />
               </el-form-item>
@@ -130,7 +133,7 @@
               <el-form-item label="会员头像：">
                 <el-upload
                   class="avatar-uploader"
-                  action="/uploadController/image-upload"
+                  action="/api/uploadController/image-upload"
                   list-type="picture-card"
                   :headers="{
                     isToken: false
@@ -242,6 +245,9 @@ export default {
       registerFormRules: {
         name: [
           { required: true, message: "请填写账号名称！", trigger: "blur" }
+        ],
+        realName: [
+          { required: true, message: "请填写真实姓名！", trigger: "blur" }
         ],
         password: [
           { required: true, message: "请填写密码！", trigger: "blur" }
