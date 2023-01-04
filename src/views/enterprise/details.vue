@@ -245,7 +245,9 @@ export default {
       this.selectedModes = data.modelList;
       this.mainDetails = {
         ...data,
-        _typePhotoUrl: process.env.VUE_APP_IMAGE_BASE_URL + data.typePhotoUrl,
+        _typePhotoUrl: data.typePhotoUrl
+          ? `${process.env.VUE_APP_IMAGE_BASE_URL}${data.typePhotoUrl}`
+          : require("@/assets/default-icon.png"),
         _recruitInfo: JSON.parse(data.recruitInfo),
         _type: (this.e_types.find(y => y.value == data.type) || {}).name,
         _enterpriseScale: (

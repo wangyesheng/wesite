@@ -5,6 +5,26 @@
       color: #5e5e5e;
       margin-bottom: 20px;
     }
+    p.richtext {
+      width: 100% !important;
+      height: 100% !important;
+      span {
+        img {
+          width: 100% !important;
+          height: 100% !important;
+          object-fit: contain !important;
+        }
+      }
+      img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+      }
+
+      p {
+        margin-bottom: 10px;
+      }
+    }
   }
 }
 </style>
@@ -16,7 +36,7 @@
         <div class="common-card w750">
           <h1>{{ info.title }}</h1>
           <p class="time">{{ info._fullTime }}</p>
-          <p v-html="info.text"></p>
+          <p class="richtext" v-html="info.text"></p>
         </div>
         <div class="w420">
           <VIPForm class="mb10" />
@@ -51,6 +71,21 @@ export default {
       ...this.info,
       _fullTime: dayjs(this.info.created).format("YYYY-MM-DD HH:mm:ss")
     };
+
+    this.$nextTick(() => {
+      const richtextEl = document.querySelector(".richtext");
+      const imgEls = richtextEl.getElementsByTagName("img");
+      const ps = richtextEl.getElementsByTagName("p");
+      console.log(ps);
+      Array.prototype.forEach.call(imgEls, img => {
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "contain";
+      });
+      Array.prototype.forEach.call(ps, p => {
+        p.style.marginBottom = "10px";
+      });
+    });
   }
 };
 </script>

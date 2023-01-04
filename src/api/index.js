@@ -143,7 +143,7 @@ export function applyJobFairRes(data) {
 
 export function getJobFairsRes(params) {
   return request({
-    url: `api/backend/core/universityRecruitment/PageList`,
+    url: `api/universityRecruitment/PageList`,
     method: "get",
     params
   });
@@ -159,7 +159,7 @@ export function applyCooperativeProjectRes(data) {
 
 export function getCooperativeProjectRes(params) {
   return request({
-    url: `api/backend/core/cooperativeproject/PageList`,
+    url: `api/cooperativeproject/PageList`,
     method: "get",
     params
   });

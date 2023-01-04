@@ -246,7 +246,9 @@ export default {
       this.selectedModes = data.modelList;
       this.schoolDetails = {
         ...data,
-        _typePhotoUrl: process.env.VUE_APP_IMAGE_BASE_URL + data.typePhotoUrl,
+        _typePhotoUrl: data.typePhotoUrl
+          ? `${process.env.VUE_APP_IMAGE_BASE_URL}${data.typePhotoUrl}`
+          : require("@/assets/default-icon.png"),
         internship: JSON.parse(data.internship),
         _level: (this.s_levels.find(y => y.value == data.level) || {}).name,
         _type: (this.s_types.find(y => y.value == data.type) || {}).name,

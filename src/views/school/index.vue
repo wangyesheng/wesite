@@ -280,9 +280,9 @@ export default {
       this.schoolWrap.data = content.map(x => {
         return {
           ...x,
-          _typePhotoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${
-            x.typePhotoUrl
-          }`,
+          _typePhotoUrl: x.typePhotoUrl
+            ? `${process.env.VUE_APP_IMAGE_BASE_URL}${x.typePhotoUrl}`
+            : require("@/assets/default-icon.png"),
           updatedDate: x.updatedDate
             ? dayjs(x.updatedDate).format("YYYY-MM-DD HH:mm:ss")
             : "",
