@@ -59,7 +59,7 @@
                 <el-input value="免费宣传" disabled></el-input>
               </el-form-item>
 
-              <h3>二、上传回执表</h3>
+              <!-- <h3>二、上传回执表</h3>
               <el-form-item label="上传回执表：">
                 <el-row :gutter="20">
                   <el-upload
@@ -86,9 +86,9 @@
                     4、请保存好您的盖章件原件，实体校企会报到时需出示原件，用以确认身份。
                   </p>
                 </div>
-              </el-form-item>
+              </el-form-item> -->
 
-              <h3>三、 添加企业信息</h3>
+              <h3>二、 添加企业信息</h3>
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="企业名称：">
@@ -185,7 +185,7 @@
                 </el-checkbox-group>
               </el-form-item>
 
-              <h3>四、企业安置或实习情况</h3>
+              <h3>三、企业安置或实习情况</h3>
               <el-row :gutter="20">
                 <el-col :span="6">
                   <a
@@ -225,7 +225,7 @@
                 </el-table-column>
               </el-table>
 
-              <h3>五、企业联系方式</h3>
+              <h3>四、企业联系方式</h3>
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="地址：">
@@ -255,7 +255,7 @@
                 </el-col>
               </el-row>
 
-              <h3>六、企业联系人联系方式</h3>
+              <h3>五、企业联系人联系方式</h3>
               <el-row :gutter="20">
                 <el-col :span="6">
                   <a
@@ -289,7 +289,7 @@
                 </el-table-column>
               </el-table>
 
-              <h3>七、上传图片</h3>
+              <h3>六、上传图片</h3>
               <el-form-item label="企业LOGO：">
                 <el-row :gutter="20">
                   <el-col :span="24">

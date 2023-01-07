@@ -42,6 +42,12 @@
           font-size: 0.9555em;
           letter-spacing: 0.1em;
         }
+
+        .el-tag {
+          position: absolute;
+          top: 24px;
+          right: 10px;
+        }
       }
     }
   }
@@ -58,7 +64,12 @@
           </div>
           <div class="list-content mb20">
             <ul class="list-wrap">
-              <li class="item" v-for="n in projects" :key="n.id">
+              <li
+                class="item"
+                v-for="n in projects"
+                :key="n.id"
+                @click="onNavTo(n)"
+              >
                 <img :src="n.authorizationLetterUrl" alt="" />
                 <div class="details">
                   <div class="__intro">
@@ -70,6 +81,12 @@
                     </div>
                   </div>
                 </div>
+                <el-tag
+                  :type="n.projectType == 1 ? 'primary' : 'success'"
+                  effect="plain"
+                >
+                  {{ n.projectType == 1 ? "学校" : "企业" }}
+                </el-tag>
               </li>
               <el-pagination
                 layout="prev, pager, next"
@@ -141,6 +158,10 @@ export default {
           x.authorizationLetterUrl
         }`
       }));
+    },
+    onNavTo(scoped) {
+      localStorage.setItem("lastestSEProjectDetails", JSON.stringify(scoped));
+      this.$router.push("/se-project_details");
     }
   },
 

@@ -177,7 +177,7 @@
                 <el-form-item label="邀请函：">
                   <el-row :gutter="20">
                     <el-col :span="24">
-                      <el-upload
+                      <!-- <el-upload
                         class="uploader-wrap"
                         action="/api/uploadController/image-upload"
                         list-type="picture-card"
@@ -194,14 +194,20 @@
                         "
                       >
                         <i class="el-icon-plus uploader-icon"></i>
-                      </el-upload>
+                      </el-upload> -->
+                      <el-input
+                        type="textarea"
+                        autosize
+                        placeholder="请输入邀请函内容"
+                        v-model="formData.invitationLetter"
+                      />
                     </el-col>
                   </el-row>
-                  <div class="tips mt10">
+                  <!-- <div class="tips mt10">
                     注意：
                     <p>1、图片仅限.jpg格式；</p>
                     <p>2、大小单张限制1M以内。</p>
-                  </div>
+                  </div> -->
                 </el-form-item>
               </el-row>
               <el-form-item>

@@ -505,6 +505,10 @@ a.btn-primary {
           font-size: 18px;
           font-weight: 600;
           margin-bottom: 0.5em;
+          width: 450px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         div {
           &:not(:last-child) {
@@ -525,9 +529,6 @@ a.btn-primary {
               color: #5a5a5a;
               font-size: 14px;
               font-weight: 600;
-            }
-
-            span.school-address {
             }
           }
         }

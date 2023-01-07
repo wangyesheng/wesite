@@ -78,6 +78,7 @@
     .user-wrap {
       display: flex;
       align-content: center;
+      cursor: pointer;
 
       img {
         width: 40px;
@@ -178,12 +179,13 @@
             </el-input>
           </div>
           <div class="btn-vip" v-if="Object.keys(appUser).length == 0">
-            <a href="javascript:;">会员登录</a>
-            <a href="javascript:;" @click="$router.push('/register')">
+            <!-- <a href="javascript:;">会员登录</a> -->
+            <!-- <a href="javascript:;" @click="$router.push('/register')">
               会员注册
-            </a>
+            </a> -->
+            欢迎您！
           </div>
-          <div class="user-wrap" v-else>
+          <div class="user-wrap" v-else @click="$router.push('vip-info')">
             <img :src="appUser._portraitUrl" alt="" />
             <span>{{ appUser.name }}</span>
           </div>

@@ -60,8 +60,8 @@
         </div>
         <div class="vip-level">{{ appUser._memberTypeName }}</div>
         <div class="vip-time">
-          <span>vip有效期</span>
-          <span>2022-12-28</span>
+          <span>VIP有效期：</span>
+          <span>2099-12-28</span>
         </div>
       </div>
 
@@ -83,7 +83,7 @@
 
 <script>
 import { checkLoginRes, getUserInfoRes } from "@/api";
-import { setToken } from "@/utils/auth";
+import { setToken, removeToken } from "@/utils/auth";
 import dictionaryMixin from "@/mixins/dictionary.js";
 import store from "@/store";
 
@@ -123,6 +123,7 @@ export default {
     handleLogout() {
       localStorage.setItem("app_user", "{}");
       store.commit("user/SET_APP_USER", {});
+      removeToken();
       this.appUser = {};
     }
   }

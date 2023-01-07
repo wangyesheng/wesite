@@ -227,7 +227,7 @@
             <span class="name">{{ appUser.name }}</span>
             <span class="level">{{ appUser._memberTypeName }}</span>
             <span class="phone">手机号：{{ appUser.mobile }}</span>
-            <span class="service-time">服务有效期：2022-12-20</span>
+            <span class="service-time">VIP有效期：2099-12-20</span>
           </div>
         </div>
         <div class="tabs" @click="onTabClick">

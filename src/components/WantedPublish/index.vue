@@ -15,11 +15,7 @@
     </div>
     <div class="list-content">
       <!-- <a href="javascript:;" class="btn-plain mt10">校企会报名</a> -->
-      <a
-        href="javascript:;"
-        class="btn-plain mt10"
-        @click="$router.push('/job-fair_apply')"
-      >
+      <a href="javascript:;" class="btn-plain mt10" @click="onJobFairApply">
         校招会发布
       </a>
       <a
@@ -48,6 +44,8 @@
 </template>
 
 <script>
+import store from "@/store";
+
 export default {
   name: "WantedPublish",
 
@@ -62,8 +60,26 @@ export default {
     };
   },
 
+  computed: {
+    appUser() {
+      return store.getters.appUser;
+    }
+  },
+
   methods: {
+    beforeApply() {
+      if (Object.keys(this.appUser).length === 0) {
+        this.$message.warning("请先登录再发布信息！");
+        return false;
+      }
+      return true;
+    },
+    onJobFairApply() {
+      if (!this.beforeApply()) return;
+      this.$router.push("/job-fair_apply");
+    },
     onIDDialogShow(path, isFull) {
+      if (!this.beforeApply()) return;
       this.IDDialog.path = path;
       this.IDDialog.isFull = isFull;
       this.IDDialog.visible = true;

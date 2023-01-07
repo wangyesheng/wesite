@@ -92,7 +92,7 @@
               <el-form-item prop="name" label="账号名称：">
                 <el-input v-model="registerFormData.name" />
               </el-form-item>
-              <el-form-item prop="name" label="真实姓名">
+              <el-form-item prop="name" label="真实姓名：">
                 <el-input v-model="registerFormData.realName" />
               </el-form-item>
               <el-form-item prop="mobile" label="手机号：">

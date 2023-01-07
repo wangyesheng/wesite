@@ -64,7 +64,12 @@
           </div>
           <div class="list-content mb20">
             <ul class="list-wrap">
-              <li class="item" v-for="n in jobFairs" :key="n.id">
+              <li
+                class="item"
+                v-for="n in jobFairs"
+                :key="n.id"
+                @click="onNavTo(n)"
+              >
                 <img :src="n.photoUrl" alt="" />
                 <div class="details">
                   <div class="__intro">
@@ -164,6 +169,10 @@ export default {
         ...x,
         photoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${x.photoUrl}`
       }));
+    },
+    onNavTo(scoped) {
+      localStorage.setItem("lastestJobFairDetails", JSON.stringify(scoped));
+      this.$router.push("/job-fair_details");
     }
   },
 
