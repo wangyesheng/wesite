@@ -1,29 +1,29 @@
 <style lang="scss" scoped>
 .content {
   .common-card {
-    .time {
-      color: #5e5e5e;
-      margin-bottom: 20px;
-    }
-    p.richtext {
-      width: 100% !important;
-      height: 100% !important;
-      span {
-        img {
-          width: 100% !important;
-          height: 100% !important;
-          object-fit: contain !important;
+    .back-icon {
+      height: 30px;
+      text-align: right;
+      & /deep/ .el-icon-back {
+        font-size: 18px;
+        cursor: pointer;
+        color: #000;
+        font-weight: 550;
+        transition: 0.3s;
+        &:hover {
+          color: #1565d8;
         }
       }
-      img {
-        width: 100% !important;
-        height: 100% !important;
-        object-fit: contain !important;
-      }
+    }
 
-      p {
-        margin-bottom: 10px;
-      }
+    h1 {
+      color: #000;
+    }
+    .time-source {
+      color: #5e5e5e;
+      display: flex;
+      justify-content: space-between;
+      margin: 0 auto 20px;
     }
   }
 }
@@ -34,8 +34,14 @@
     <div class="w1200">
       <div class="first flex-jc-sb mb20">
         <div class="common-card w750">
+          <div class="back-icon">
+            <i class="el-icon-back" @click="$router.go(-1)">返回</i>
+          </div>
           <h1>{{ info.title }}</h1>
-          <p class="time">{{ info._fullTime }}</p>
+          <p class="time-source">
+            <span>发布时间：{{ info._fullTime }}</span>
+            <span>来源：{{ info.source }}</span>
+          </p>
           <p class="richtext" v-html="info.text"></p>
         </div>
         <div class="w420">
@@ -76,7 +82,7 @@ export default {
       const richtextEl = document.querySelector(".richtext");
       const imgEls = richtextEl.getElementsByTagName("img");
       const ps = richtextEl.getElementsByTagName("p");
-      console.log(ps);
+
       Array.prototype.forEach.call(imgEls, img => {
         img.style.width = "100%";
         img.style.height = "100%";
@@ -84,6 +90,9 @@ export default {
       });
       Array.prototype.forEach.call(ps, p => {
         p.style.marginBottom = "10px";
+        p.style.letterSpacing = "0.1em";
+        p.style.textIndent = "2em";
+        p.style.color = "#000";
       });
     });
   }

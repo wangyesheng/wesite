@@ -171,6 +171,26 @@
           </div>
 
           <div class="sub-intro">
+            <div class="sub-intro_title">开设专业</div>
+            <div class="sub-intro_content">
+              <el-checkbox-group v-model="selectSpecialtyList">
+                <el-row :gutter="20">
+                  <el-col
+                    class="mb10"
+                    :span="8"
+                    v-for="n in se_workTypes"
+                    :key="n.value"
+                  >
+                    <el-checkbox :label="n.value">
+                      {{ n.name }}
+                    </el-checkbox>
+                  </el-col>
+                </el-row>
+              </el-checkbox-group>
+            </div>
+          </div>
+
+          <div class="sub-intro">
             <div class="sub-intro_title">院校安置或实习情况</div>
             <div class="sub-intro_content table">
               <el-table :data="schoolDetails.internship">
@@ -229,6 +249,7 @@ export default {
     await this._querySEPeople();
     await this._querySECooperationMode();
     await this.querySchoolDetails();
+    await this._queryWorkTypes();
   },
 
   data() {
@@ -236,7 +257,8 @@ export default {
       cooperationModes: [],
       schoolDetails: {},
       phone: "",
-      selectedModes: []
+      selectedModes: [],
+      selectSpecialtyList: []
     };
   },
 
@@ -244,6 +266,7 @@ export default {
     async querySchoolDetails() {
       const data = await getSchoolDetailsByIdRes(this.id);
       this.selectedModes = data.modelList;
+      this.selectSpecialtyList = JSON.parse(data.specialty).map(x => String(x));
       this.schoolDetails = {
         ...data,
         _typePhotoUrl: data.typePhotoUrl

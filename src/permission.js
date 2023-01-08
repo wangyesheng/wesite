@@ -1,17 +1,13 @@
 import router from "./router";
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import store from "@/store";
 
-NProgress.configure({
-  showSpinner: true
-});
-
+let hasVerifiedToken = false;
 router.beforeEach(async (to, from, next) => {
-  // NProgress.start();
+  if (!hasVerifiedToken && store.getters.appUser.id) {
+    await store.dispatch("user/verifyJwtToken");
+    hasVerifiedToken = true;
+  }
   next();
-  // NProgress.done();
 });
 
-router.afterEach(() => {
-  NProgress.done();
-});
+router.afterEach(() => {});

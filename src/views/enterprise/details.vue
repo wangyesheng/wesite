@@ -160,6 +160,26 @@
           </div>
 
           <div class="sub-intro">
+            <div class="sub-intro_title">招聘专业</div>
+            <div class="sub-intro_content">
+              <el-checkbox-group v-model="selectedWorkingTypes">
+                <el-row :gutter="20">
+                  <el-col
+                    class="mb10"
+                    :span="8"
+                    v-for="n in se_workTypes"
+                    :key="n.value"
+                  >
+                    <el-checkbox :label="n.value">
+                      {{ n.name }}
+                    </el-checkbox>
+                  </el-col>
+                </el-row>
+              </el-checkbox-group>
+            </div>
+          </div>
+
+          <div class="sub-intro">
             <div class="sub-intro_title">企业用工情况</div>
             <div class="sub-intro_content table">
               <el-table :data="mainDetails._recruitInfo">
@@ -175,7 +195,7 @@
                 <el-table-column
                   align="center"
                   prop="male"
-                  label="性别限制"
+                  label="男女比例"
                   width="100"
                 >
                 </el-table-column>
@@ -228,6 +248,7 @@ export default {
     await this._queryEnterpriseType();
     await this._querySEPeople();
     await this._querySECooperationMode();
+    await this._queryWorkTypes();
     await this.query();
   },
 
@@ -235,7 +256,8 @@ export default {
     return {
       selectedModes: [],
       mainDetails: {},
-      phone: ""
+      phone: "",
+      selectedWorkingTypes: []
     };
   },
 
@@ -243,6 +265,9 @@ export default {
     async query() {
       const data = await getEnterpriseDetailsByIdRes(this.id);
       this.selectedModes = data.modelList;
+      this.selectedWorkingTypes = JSON.parse(data.workingType).map(x =>
+        String(x)
+      );
       this.mainDetails = {
         ...data,
         _typePhotoUrl: data.typePhotoUrl

@@ -180,3 +180,40 @@ export function changePasswordRes(data) {
     data
   });
 }
+
+export function orderPositionRes(id) {
+  return request({
+    url: `api/backend/core/universityRecruitment/Station/${id}`,
+    method: "get"
+  });
+}
+
+export function getJobFairDetailsRes(id) {
+  return request({
+    url: `api/backend/core/universityRecruitment/show/${id}`,
+    method: "get"
+  });
+}
+
+export function verifyJwtTokenRes(token) {
+  return request({
+    url: `api/member/very-token`,
+    method: "post",
+    data: {
+      token
+    }
+  });
+}
+
+export function searchArticleRes({ title }) {
+  return request({
+    url: `api/article/search`,
+    method: "get",
+    params: {
+      "Q_Contains_@articleExt-title": title,
+      subChannelId: "89",
+      page: 1,
+      pageSize: 10
+    }
+  });
+}

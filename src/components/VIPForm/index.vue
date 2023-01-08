@@ -73,9 +73,9 @@
         >
           会员中心
         </a>
-        <a href="javascript:;" class="btn-plain" @click="handleLogout"
-          >退出登录</a
-        >
+        <a href="javascript:;" class="btn-plain" @click="handleLogout">
+          退出登录
+        </a>
       </div>
     </div>
   </div>
@@ -121,7 +121,7 @@ export default {
       this.appUser = data;
     },
     handleLogout() {
-      localStorage.setItem("app_user", "{}");
+      localStorage.setItem("app_user", "");
       store.commit("user/SET_APP_USER", {});
       removeToken();
       this.appUser = {};

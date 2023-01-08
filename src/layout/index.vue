@@ -20,12 +20,17 @@
     }
 
     .search-form {
-      width: 600px;
+      width: 750px;
       height: 40px;
       margin-right: auto;
 
       ::v-deep {
         .input-with-select {
+          .el-select {
+            .el-input__inner:focus {
+              border-color: #dcdfe6 !important;
+            }
+          }
           .el-input__inner {
             font-size: 16px;
 
@@ -36,7 +41,7 @@
           }
         }
         .el-select .el-input {
-          width: 130px;
+          width: 140px;
         }
 
         .el-input-group__append {
@@ -172,8 +177,20 @@
                 slot="prepend"
                 placeholder="请选择"
               >
+                <el-option
+                  v-for="item in searchOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
               </el-select>
-              <el-button type="primary" slot="append" icon="el-icon-search">
+              <el-button
+                type="primary"
+                slot="append"
+                icon="el-icon-search"
+                @click="onSearch"
+              >
                 搜索
               </el-button>
             </el-input>
@@ -234,6 +251,8 @@
 <script>
 import { isMobile } from "@/utils";
 import store from "@/store";
+import { searchArticleRes } from "@/api";
+
 export default {
   name: "LAYOUT",
 
@@ -289,12 +308,38 @@ export default {
         value: "",
         type: ""
       },
+      searchOptions: [
+        {
+          value: "news",
+          label: "资讯"
+        },
+        {
+          value: "school",
+          label: "院校"
+        },
+        {
+          value: "enterprise",
+          label: "企业"
+        }
+      ],
       bannerUrls: [
         require("../assets/banner/1.jpg"),
         require("../assets/banner/2.jpg"),
         require("../assets/banner/3.jpg")
       ]
     };
+  },
+
+  methods: {
+    onSearch() {
+      console.log(this.queryForm.type);
+    }
+  },
+
+  async mounted() {
+    // const data = await searchArticleRes({
+    //   title: "中共中央办公厅"
+    // });
   }
 };
 </script>

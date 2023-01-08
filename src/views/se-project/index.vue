@@ -45,7 +45,7 @@
 
         .el-tag {
           position: absolute;
-          top: 24px;
+          top: 10px;
           right: 10px;
         }
       }
@@ -70,7 +70,7 @@
                 :key="n.id"
                 @click="onNavTo(n)"
               >
-                <img :src="n.authorizationLetterUrl" alt="" />
+                <img :src="n.imageLogo" alt="" />
                 <div class="details">
                   <div class="__intro">
                     <p class="__intro_title">{{ n.projectTitle }}</p>
@@ -81,10 +81,7 @@
                     </div>
                   </div>
                 </div>
-                <el-tag
-                  :type="n.projectType == 1 ? 'primary' : 'success'"
-                  effect="plain"
-                >
+                <el-tag :type="n.projectType == 1 ? 'primary' : 'success'">
                   {{ n.projectType == 1 ? "学校" : "企业" }}
                 </el-tag>
               </li>
@@ -156,7 +153,8 @@ export default {
         ...x,
         authorizationLetterUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${
           x.authorizationLetterUrl
-        }`
+        }`,
+        imageLogo: `${process.env.VUE_APP_IMAGE_BASE_URL}${x.imageLogo}`
       }));
     },
     onNavTo(scoped) {

@@ -30,8 +30,10 @@
     }
   }
   .project-details {
+    color: #000;
     &_title {
       text-align: center;
+      margin-bottom: 30px;
     }
 
     &_organAndTime {
@@ -41,14 +43,55 @@
       justify-content: space-between;
       font-weight: bold;
       margin-bottom: 20px;
-      color: #333;
     }
 
     &_content {
       text-indent: 2em;
-      color: #333;
-      line-height: 1.5em;
-      letter-spacing: 0.2em;
+      font-size: 0.95555em;
+      line-height: 1.6em;
+      margin-bottom: 20px;
+    }
+
+    .sub-intro {
+      margin-bottom: 10px;
+      &_title {
+        position: relative;
+        margin-left: 10px;
+        font-weight: 600;
+        border-bottom: 1px solid #e3e7ed;
+        padding-bottom: 10px;
+        &::before {
+          content: "";
+          width: 4px;
+          height: 100%;
+          background: #1565d8;
+          position: absolute;
+          top: -6px;
+          left: -10px;
+          transform: scaleY(0.5);
+        }
+      }
+
+      &_content {
+        padding: 10px;
+        .photo-layer {
+          width: 280px;
+          height: 280px;
+          padding: 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 5px;
+          text-align: center;
+          width: 100%;
+
+          img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+          }
+        }
+      }
     }
   }
 }
@@ -75,6 +118,14 @@
               <span>发布时间：{{ projectInfo._publishTime }}</span>
             </div>
             <p class="project-details_content">{{ projectInfo.content }}</p>
+            <div class="sub-intro">
+              <div class="sub-intro_title">委托书</div>
+              <div class="sub-intro_content">
+                <div class="photo-layer">
+                  <img :src="projectInfo.authorizationLetterUrl" alt="" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="w420">

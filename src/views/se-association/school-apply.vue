@@ -80,53 +80,33 @@
             <span>院校报名</span>
           </div>
           <div class="list-content">
-            <el-form label-position="left">
+            <el-form
+              label-position="left"
+              ref="applyFormRef"
+              :model="formData"
+              :rules="formRules"
+            >
               <h3>一、选择报名类别</h3>
               <el-form-item label="报名类型：">
                 <el-input value="免费宣传" disabled></el-input>
               </el-form-item>
 
-              <!-- <h3>二、上传回执表</h3>
-              <el-form-item label="上传回执表：">
-                <el-row :gutter="20">
-                  <el-col :span="24">
-                    <el-upload
-                      class="uploader-wrap"
-                      action="/api/uploadController/image-upload"
-                      list-type="picture-card"
-                      :headers="{
-                        isToken: false
-                      }"
-                      :limit="1"
-                      :data="{ resizeMode: 'normal' }"
-                      :on-success="e => onUploadSuccess(e, 'receipt')"
-                      :on-remove="() => onUploadFileRemove('receipt')"
-                    >
-                      <i class="el-icon-plus uploader-icon"></i>
-                    </el-upload>
-                  </el-col>
-                </el-row>
-                <div class="tips mt10">
-                  注意：
-                  <p>1、下载并填写回执；</p>
-                  <p>2、上传盖章回执扫描件，或盖章后拍照上传；</p>
-                  <p>3、上传图片仅.jpg格式，规格大小限制为1M以内；</p>
-                  <p>
-                    4、请保存好您的盖章件原件，实体校企会报到时需出示原件，用以确认身份。
-                  </p>
-                </div>
-              </el-form-item> -->
-
               <h3>二、添加院校信息</h3>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="院校名称：">
-                    <el-input v-model="formData.name" />
+                  <el-form-item label="院校名称：" prop="name">
+                    <el-input
+                      v-model="formData.name"
+                      placeholder="请输入院校名称"
+                    />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="性质：">
-                    <el-radio-group v-model="formData.type">
+                  <el-form-item label="院校性质：" prop="type">
+                    <el-radio-group
+                      placeholder="请选择院校性质"
+                      v-model="formData.type"
+                    >
                       <el-radio label="2">公办</el-radio>
                       <el-radio label="1">民办</el-radio>
                     </el-radio-group>
@@ -135,10 +115,10 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="层次：">
+                  <el-form-item label="院校层次：" prop="level">
                     <el-select
                       v-model="formData.level"
-                      placeholder="请选择层次"
+                      placeholder="请选择院校层次"
                     >
                       <el-option
                         v-for="item in s_levels"
@@ -151,7 +131,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="在校人数：">
+                  <el-form-item label="在校人数：" prop="studentNumber">
                     <el-select
                       v-model="formData.studentNumber"
                       placeholder="请选择在校人数"
@@ -169,21 +149,23 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="地域归属：">
+                  <el-form-item label="地域归属：" prop="selectedChinaArea">
                     <!-- 级联 -->
                     <el-cascader
-                      v-model="selectedChinaArea"
+                      v-model="formData.selectedChinaArea"
                       :options="chinaAreas"
                       :props="{ label: 'name', value: 'name' }"
+                      placeholder="请选择地域归属"
                     />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="院校简介：">
+                  <el-form-item label="院校简介：" prop="introduction">
                     <el-input
                       type="textarea"
                       autosize
                       v-model="formData.introduction"
+                      placeholder="请输入院校简介"
                     />
                   </el-form-item>
                 </el-col>
@@ -260,17 +242,21 @@
               <h3>四、院校联系方式</h3>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="地址：">
+                  <el-form-item label="地址：" prop="detailAddr">
                     <el-input
                       type="textarea"
                       autosize
                       v-model="formData.detailAddr"
+                      placeholder="请输入院校详细地址"
                     />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="电话：">
-                    <el-input v-model="formData.telephone"></el-input>
+                  <el-form-item label="电话：" prop="telephone">
+                    <el-input
+                      v-model="formData.telephone"
+                      placeholder="请输入院校电话"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -281,8 +267,11 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="邮箱：">
-                    <el-input v-model="formData.email"></el-input>
+                  <el-form-item label="邮箱：" prop="email">
+                    <el-input
+                      v-model="formData.email"
+                      placeholder="请输入院校邮箱"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -327,7 +316,7 @@
                   <el-col :span="24">
                     <el-upload
                       class="uploader-wrap"
-                      action="/uploadController/image-upload"
+                      action="/api/uploadController/image-upload"
                       list-type="picture-card"
                       :headers="{
                         isToken: false
@@ -343,7 +332,7 @@
                 </el-row>
                 <div class="tips mt10">
                   注意：
-                  <p>1、图片仅限.jpg格式；</p>
+                  <p>1、图片限.png、.jpg、.jpeg格式；</p>
                   <p>2、大小单张限制1M以内。</p>
                 </div>
               </el-form-item>
@@ -352,7 +341,7 @@
                   <el-col :span="24">
                     <el-upload
                       class="uploader-wrap"
-                      action="/uploadController/image-upload"
+                      action="/api/uploadController/image-upload"
                       list-type="picture-card"
                       :headers="{
                         isToken: false
@@ -368,7 +357,7 @@
                 </el-row>
                 <div class="tips mt10">
                   注意：
-                  <p>1、图片仅限.jpg格式；</p>
+                  <p>1、图片限.png、.jpg、.jpeg格式；</p>
                   <p>2、大小单张限制1M以内。</p>
                 </div>
               </el-form-item>
@@ -418,7 +407,6 @@ export default {
       internshipData: [],
       contacts: [],
       chinaAreas,
-      selectedChinaArea: [],
       formData: {
         receipt: "", // 回执
         name: "", // 院校名称
@@ -438,7 +426,42 @@ export default {
         model: [],
         specialty: [],
         introduction: "",
-        typePhotoUrl: ""
+        typePhotoUrl: "",
+        selectedChinaArea: []
+      },
+      formRules: {
+        name: [
+          { required: true, message: "请输入院校名称！", trigger: "blur" }
+        ],
+        type: [
+          { required: true, message: "请选择院校性质！", trigger: "change" }
+        ],
+        level: [
+          { required: true, message: "请选择院校层次！", trigger: "change" }
+        ],
+        studentNumber: [
+          { required: true, message: "请选择在校人数！", trigger: "change" }
+        ],
+        selectedChinaArea: [
+          {
+            required: true,
+            type: "array",
+            message: "请选择地域归属！",
+            trigger: "change"
+          }
+        ],
+        introduction: [
+          { required: true, message: "请输入院校简介！", trigger: "blur" }
+        ],
+        detailAddr: [
+          { required: true, message: "请输入院校详细地址！", trigger: "blur" }
+        ],
+        telephone: [
+          { required: true, message: "请输入院校电话！", trigger: "blur" }
+        ],
+        email: [
+          { required: true, message: "请输入院校邮箱！", trigger: "blur" }
+        ]
       }
     };
   },
@@ -475,29 +498,31 @@ export default {
         wechat: ""
       });
     },
-    async onSumbit() {
-      const {
-        contacts,
-        internshipData,
-        selectedChinaArea,
-        formData
-      } = this.$data;
-      const [province, city, region] = selectedChinaArea;
-      const reqData = {
-        ...formData,
-        province,
-        city,
-        region,
-        contactorDetail: JSON.stringify(contacts),
-        internship: JSON.stringify(internshipData),
-        specialty: JSON.stringify(
-          formData.specialty.map(x => Number(x)).sort((a, b) => a - b)
-        ),
-        model: formData.model.join(";")
-      };
-      await createSchoolRes(reqData);
-      this.$message.success("操作成功！");
-      this.$router.push("/school");
+    onSumbit() {
+      this.$refs.applyFormRef.validate(async valid => {
+        if (valid) {
+          const { contacts, internshipData, formData } = this.$data;
+          const selectedChinaArea = this.formData.selectedChinaArea;
+          const [province, city, region] = selectedChinaArea;
+          const reqData = {
+            ...formData,
+            province,
+            city,
+            region,
+            contactorDetail: JSON.stringify(contacts),
+            internship: JSON.stringify(internshipData),
+            specialty: JSON.stringify(
+              formData.specialty.map(x => Number(x)).sort((a, b) => a - b)
+            ),
+            model: formData.model.join(";")
+          };
+          await createSchoolRes(reqData);
+          this.$message.success("操作成功！");
+          this.$router.push("/school");
+        } else {
+          return false;
+        }
+      });
     }
   }
 };

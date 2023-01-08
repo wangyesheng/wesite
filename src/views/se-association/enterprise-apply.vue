@@ -7,6 +7,10 @@
         .el-form-item {
           display: flex;
           margin-bottom: 36px;
+          .el-select,
+          .el-cascader {
+            width: 100%;
+          }
           .el-form-item__label {
             color: #606266;
             font-size: 14px;
@@ -53,7 +57,12 @@
             <span>企业报名</span>
           </div>
           <div class="list-content">
-            <el-form label-position="left">
+            <el-form
+              label-position="left"
+              ref="applyFormRef"
+              :model="formData"
+              :rules="formRules"
+            >
               <h3>一、选择报名类别</h3>
               <el-form-item label="报名类型：">
                 <el-input value="免费宣传" disabled></el-input>
@@ -91,12 +100,15 @@
               <h3>二、 添加企业信息</h3>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="企业名称：">
-                    <el-input v-model="formData.name" />
+                  <el-form-item label="企业名称：" prop="name">
+                    <el-input
+                      v-model="formData.name"
+                      placeholder="请输入企业名称"
+                    />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="企业性质：">
+                  <el-form-item label="企业性质：" prop="type">
                     <el-select
                       v-model="formData.type"
                       placeholder="请选择企业性质"
@@ -114,10 +126,10 @@
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="规模人数：">
+                  <el-form-item label="规模人数：" prop="enterpriseScale">
                     <el-select
                       v-model="formData.enterpriseScale"
-                      placeholder="请选择规模人数"
+                      placeholder="请选择企业规模人数"
                     >
                       <el-option
                         v-for="item in se_people"
@@ -130,23 +142,25 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="地域归属：">
+                  <el-form-item label="地域归属：" prop="selectedChinaArea">
                     <!-- 级联 -->
                     <el-cascader
-                      v-model="selectedChinaArea"
+                      v-model="formData.selectedChinaArea"
                       :options="chinaAreas"
-                      :props="{ label: 'name', value: 'code' }"
+                      :props="{ label: 'name', value: 'name' }"
+                      placeholder="请选择地域归属"
                     />
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="24">
-                  <el-form-item label="企业简介：">
+                  <el-form-item label="企业简介：" prop="introduction">
                     <el-input
                       type="textarea"
                       autosize
                       v-model="formData.introduction"
+                      placeholder="请输入企业简介"
                     />
                   </el-form-item>
                 </el-col>
@@ -228,29 +242,39 @@
               <h3>四、企业联系方式</h3>
               <el-row :gutter="20">
                 <el-col :span="12">
-                  <el-form-item label="地址：">
+                  <el-form-item label="详细地址：" prop="detailAddr">
                     <el-input
                       type="textarea"
                       autosize
                       v-model="formData.detailAddr"
+                      placeholder="请输入企业详细地址"
                     />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="电话：">
-                    <el-input v-model="formData.telephone"></el-input>
+                  <el-form-item label="电话：" prop="telephone">
+                    <el-input
+                      v-model="formData.telephone"
+                      placeholder="请输入企业电话"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="网址：">
-                    <el-input v-model="formData.website"></el-input>
+                    <el-input
+                      v-model="formData.website"
+                      placeholder="请输入企业网址"
+                    />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="邮箱：">
-                    <el-input v-model="formData.email"></el-input>
+                  <el-form-item label="邮箱：" prop="email">
+                    <el-input
+                      v-model="formData.email"
+                      placeholder="请输入企业邮箱"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -311,7 +335,7 @@
                 </el-row>
                 <div class="tips mt10">
                   注意：
-                  <p>1、图片仅限.jpg格式；</p>
+                  <p>1、图片限.png、.jpg、.jpeg格式；</p>
                   <p>2、大小单张限制1M以内。</p>
                 </div>
               </el-form-item>
@@ -336,7 +360,7 @@
                 </el-row>
                 <div class="tips mt10">
                   注意：
-                  <p>1、图片仅限.jpg格式；</p>
+                  <p>1、图片限.png、.jpg、.jpeg格式；</p>
                   <p>2、大小单张限制1M以内。</p>
                 </div>
               </el-form-item>
@@ -386,11 +410,10 @@ export default {
       jobs: [],
       contacts: [],
       chinaAreas,
-      selectedChinaArea: [],
       formData: {
         receipt: "", // 回执
         name: "", // 院校名称
-        type: "2",
+        type: "",
         level: "",
         enterpriseScale: "",
         province: "",
@@ -405,7 +428,33 @@ export default {
         model: [],
         workingType: [],
         introduction: "",
-        typePhotoUrl: ""
+        typePhotoUrl: "",
+        selectedChinaArea: []
+      },
+      formRules: {
+        name: [{ required: true, message: "请输入名称！", trigger: "blur" }],
+        type: [{ required: true, message: "请选择性质！", trigger: "change" }],
+        enterpriseScale: [
+          { required: true, message: "请选择规模人数！", trigger: "change" }
+        ],
+        selectedChinaArea: [
+          {
+            required: true,
+            type: "array",
+            message: "请选择地域归属！",
+            trigger: "change"
+          }
+        ],
+        introduction: [
+          { required: true, message: "请输入简介！", trigger: "blur" }
+        ],
+        detailAddr: [
+          { required: true, message: "请输入详细地址！", trigger: "blur" }
+        ],
+        telephone: [
+          { required: true, message: "请输入电话！", trigger: "blur" }
+        ],
+        email: [{ required: true, message: "请输入邮箱！", trigger: "blur" }]
       }
     };
   },
@@ -443,25 +492,31 @@ export default {
         wechat: ""
       });
     },
-    async onSumbit() {
-      const { contacts, jobs, selectedChinaArea, formData } = this.$data;
-      const [province, city, region] = selectedChinaArea;
-      const reqData = {
-        ...formData,
-        level: this.type,
-        province,
-        city,
-        region,
-        contactorDetail: JSON.stringify(contacts),
-        recruitInfo: JSON.stringify(jobs),
-        workingType: JSON.stringify(
-          formData.workingType.map(x => Number(x)).sort((a, b) => a - b)
-        ),
-        model: formData.model.join(";")
-      };
-      await createEnterpriseRes(reqData);
-      this.$message.success("操作成功！");
-      this.$router.push("/enterprise");
+    onSumbit() {
+      this.$refs.applyFormRef.validate(async valid => {
+        if (valid) {
+          const { contacts, jobs, formData } = this.$data;
+          const [province, city, region] = this.formData.selectedChinaArea;
+          const reqData = {
+            ...formData,
+            level: this.type,
+            province,
+            city,
+            region,
+            contactorDetail: JSON.stringify(contacts),
+            recruitInfo: JSON.stringify(jobs),
+            workingType: JSON.stringify(
+              formData.workingType.map(x => Number(x)).sort((a, b) => a - b)
+            ),
+            model: formData.model.join(";")
+          };
+          await createEnterpriseRes(reqData);
+          this.$message.success("操作成功！");
+          this.$router.push("/enterprise");
+        } else {
+          return false;
+        }
+      });
     }
   }
 };

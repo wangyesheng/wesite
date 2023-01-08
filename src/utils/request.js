@@ -9,13 +9,13 @@ const service = axios.create({
   timeout: 50000 // request timeout
 });
 
+let currentUrl;
 // request interceptor
 service.interceptors.request.use(
   config => {
+    currentUrl = config.url;
     const token = getToken();
-    if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
-    }
+    token && (config.headers["Authorization"] = `Bearer ${token}`);
     return config;
   },
   error => {
@@ -32,29 +32,28 @@ service.interceptors.response.use(
       statusText,
       data: { status: code, message, data }
     } = response;
-    if (status !== 200 || code !== 0) {
+    if (currentUrl.includes("member/very-token")) {
+      return {
+        code,
+        message,
+        data
+      };
+    } else if (status !== 200 || code !== 0) {
       Notification({
         title: "提示",
         type: "warning",
         duration: 5 * 1000,
-        message: message || statusText || "服务器开小差啦~"
+        message: message || statusText || "服务器繁忙，请稍后再试！"
       });
-      return Promise.reject(new Error(statusText || "服务器开小差啦~"));
+      return Promise.reject(
+        new Error(statusText || "服务器繁忙，请稍后再试！")
+      );
     } else {
       return data;
     }
   },
   error => {
     console.log("err", error.response); // for debug
-    // const {
-    //   data: { msg, message }
-    // } = error.response;
-    // Notification({
-    //   title: "提示",
-    //   type: "warning",
-    //   duration: 5 * 1000,
-    //   message: msg || message || "服务器开小差啦~"
-    // });
     return Promise.reject(error);
   }
 );

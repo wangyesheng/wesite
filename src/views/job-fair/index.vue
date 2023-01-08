@@ -33,6 +33,16 @@
       .item {
         position: relative;
 
+        .details {
+          position: relative;
+
+          .el-tag {
+            position: absolute;
+            top: -6px;
+            right: -10px;
+          }
+        }
+
         a.btn-plain {
           position: absolute;
           right: 10px;
@@ -83,7 +93,7 @@
                     <div>
                       <p>
                         <span>协办单位：</span>
-                        <span>{{ n.coorganizer }}</span>
+                        <span>{{ n.coorganizer || "-" }}</span>
                       </p>
                     </div>
                     <div>
@@ -98,7 +108,16 @@
                         <span>{{ n.endTime }}</span>
                       </p>
                     </div>
+                    <div>
+                      <p>
+                        <span>占位余量：</span>
+                        <span>{{ n.applicantNumber }}</span>
+                      </p>
+                    </div>
                   </div>
+                  <el-tag :type="n._statusMap.type">
+                    {{ n._statusMap.label }}
+                  </el-tag>
                 </div>
               </li>
               <el-pagination
@@ -137,6 +156,8 @@ import VIPForm from "@/components/VIPForm";
 import WantedPublish from "@/components/WantedPublish";
 import List from "@/components/List";
 import { getJobFairsRes } from "@/api";
+import dayjs from "dayjs";
+import store from "@/store";
 
 export default {
   name: "job-fair",
@@ -165,14 +186,43 @@ export default {
         page
       });
       this.total = totalElements;
-      this.jobFairs = content.map(x => ({
-        ...x,
-        photoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${x.photoUrl}`
-      }));
+      this.jobFairs = content.map(x => {
+        const startSecs = dayjs(new Date()).diff(dayjs(x.startTime), "seconds");
+        const endSecs = dayjs(new Date()).diff(dayjs(x.endTime), "seconds");
+        let _statusMap;
+        if (startSecs < 0) {
+          // 未开始
+          _statusMap = {
+            value: 0,
+            label: "未开始",
+            type: "info"
+          };
+        } else if (startSecs > 0 && endSecs < 0) {
+          // 正在进行
+          _statusMap = {
+            value: 1,
+            label: "正在进行",
+            type: "primary"
+          };
+        } else if (endSecs > 0) {
+          // 已结束
+          _statusMap = {
+            value: 2,
+            label: "已结束",
+            type: "danger"
+          };
+        }
+        return {
+          ...x,
+          photoUrl: `${process.env.VUE_APP_IMAGE_BASE_URL}${x.photoUrl}`,
+          _statusMap
+        };
+      });
     },
     onNavTo(scoped) {
-      localStorage.setItem("lastestJobFairDetails", JSON.stringify(scoped));
-      this.$router.push("/job-fair_details");
+      if (store.getters.appUser.id)
+        this.$router.push("/job-fair_details?id=" + scoped.id);
+      else this.$message.warning("请先登录！");
     }
   },
 
